@@ -1,51 +1,73 @@
 from random import randint
 
 storage = []
+
+
 def store_ticket(ticket):
     storage.append(ticket)
 
-class Lotto():
+
+class Lotto:
     def __init__(self, ticket_length):
         self.ticket_length = ticket_length
         self.ticket = []
-        self.winning_number = []
-    
-    def make_ticket(self):
-        self.ticket = []
-        for i in range(self.ticket_length):
-            while True:
+        self.winning_ticket = []
+
+    def make_winning_ticket(self):
+        for i in range(self.ticket_length):  # 6
+            while True:  # Make Ticket
                 temp_number = randint(1, 49)
-                if not(temp_number in self.ticket):
-                    self.ticket.append(randint(1, 49))
+                if not (temp_number in self.winning_ticket):
+                    self.winning_ticket.append(temp_number)
                     break
-        store_ticket(self.ticket)
-    
-    def make_winning_number(self):
-        
+
+        return self.winning_ticket
+
+    def make_ticket(self):
+        while True:
+            self.ticket = []
+            for i in range(self.ticket_length):
+                while True:  # Make Ticket
+                    temp_number = randint(1, 49)
+                    if not (temp_number in self.ticket):
+                        self.ticket.append(temp_number)
+                        break
+            if not (self.ticket in storage):  # if not duplicate
+                store_ticket(self.ticket)
+                break
+            else:
+                print("false")
 
 
+class MyLotto:
+    def __init__(self, ticket_type):
+        self.ticket_type = ticket_type
+        self.my_tickets = []
+        self.winning_ticket = ticket_type.make_winning_ticket()
+
+    def make_tickets(self, ticket_count):
+        for i in range(ticket_count):
+            self.ticket_type.make_ticket()
+            self.my_tickets.append(self.ticket_type.ticket)
+
+    def print_tickets(self):
+        print("=======================================")
+        print(f"Lottery Ticket: {self.winning_ticket} \n")
+        print("------------My Ticket(s)------------")
+        for i in range(len(self.my_tickets)):
+            print(f"Game {i+1}: {self.my_tickets[i]}")
 
 
+def PlayGame(user):
+    while True:
+        ticket_count = int(input("How many tickets would you like to buy? "))
+        user1.make_tickets(ticket_count)
+        user1.print_tickets()
 
-def make_tickets(ticket_type, tickets):
-    ticket_list = []
-    for i in range(tickets):
-        ticket_type.make_ticket()
-        ticket_list.append(ticket_type.ticket)
-
-
-
-    
-
-    
-    
-    
 
 ticket6 = Lotto(6)
 
-make_tickets(ticket6, 5)
+user1 = MyLotto(ticket6)
 
-print(storage)
-make_tickets(ticket6, 5)
-print(storage)
 
+PlayGame(user1)
